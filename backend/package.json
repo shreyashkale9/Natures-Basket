@@ -18,14 +18,14 @@
   "author": "Nature's Basket Team",
   "license": "MIT",
   "engines": {
-    "node": ">=18.0.0",
+    "node": "18.20.4",
     "npm": ">=8.0.0"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
     "dotenv": "^16.3.1",
-    "express": "4.16.4",
+    "express": "4.18.1",
     "express-async-handler": "^1.2.0",
     "express-rate-limit": "^7.5.1",
     "helmet": "^7.2.0",
