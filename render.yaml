@@ -4,7 +4,7 @@ services:
     env: node
     plan: free
     rootDir: backend
-    buildCommand: npm install --production --no-optional
+    buildCommand: npm install --production
     startCommand: npm start
     envVars:
       - key: NODE_ENV
