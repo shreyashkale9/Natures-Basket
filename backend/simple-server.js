@@ -8,11 +8,13 @@ const url = require('url');
 const fs = require('fs');
 const path = require('path');
 
-// Simple CORS headers
+// Enhanced CORS headers
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
-  'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+  'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS, PATCH',
+  'Access-Control-Allow-Headers': 'Content-Type, Authorization, X-Requested-With, Accept, Origin',
+  'Access-Control-Allow-Credentials': 'true',
+  'Access-Control-Max-Age': '86400', // 24 hours
   'Content-Type': 'application/json'
 };
 
@@ -118,7 +120,7 @@ function filterAndSortProducts(products, query) {
 // Simple routing
 const routes = {
   '/api/health': (req, res) => {
-    res.writeHead(200, corsHeaders);
+    res.writeHead(200);
     res.end(JSON.stringify({ 
       status: 'healthy', 
       message: 'Nature\'s Basket API is running!',
@@ -132,7 +134,7 @@ const routes = {
     
     const filteredProducts = filterAndSortProducts(sampleProducts, query);
     
-    res.writeHead(200, corsHeaders);
+    res.writeHead(200);
     res.end(JSON.stringify({
       success: true,
       data: filteredProducts,
@@ -152,7 +154,7 @@ const routes = {
           const credentials = JSON.parse(body);
           // Simple demo authentication
           if (credentials.email && credentials.password) {
-            res.writeHead(200, corsHeaders);
+            res.writeHead(200);
             res.end(JSON.stringify({
               success: true,
               message: 'Login successful',
@@ -165,14 +167,14 @@ const routes = {
               }
             }));
           } else {
-            res.writeHead(400, corsHeaders);
+            res.writeHead(400);
             res.end(JSON.stringify({
               success: false,
               message: 'Invalid credentials'
             }));
           }
         } catch (error) {
-          res.writeHead(400, corsHeaders);
+          res.writeHead(400);
           res.end(JSON.stringify({
             success: false,
             message: 'Invalid JSON'
@@ -181,7 +183,7 @@ const routes = {
       });
     } else {
       // Handle GET request
-      res.writeHead(200, corsHeaders);
+      res.writeHead(200);
       res.end(JSON.stringify({
         success: true,
         message: 'Login endpoint - use POST method',
@@ -199,7 +201,7 @@ const routes = {
       req.on('end', () => {
         try {
           const userData = JSON.parse(body);
-          res.writeHead(201, corsHeaders);
+          res.writeHead(201);
           res.end(JSON.stringify({
             success: true,
             message: 'Registration successful',
@@ -212,7 +214,7 @@ const routes = {
             }
           }));
         } catch (error) {
-          res.writeHead(400, corsHeaders);
+          res.writeHead(400);
           res.end(JSON.stringify({
             success: false,
             message: 'Invalid JSON'
@@ -220,7 +222,7 @@ const routes = {
         }
       });
     } else {
-      res.writeHead(405, corsHeaders);
+      res.writeHead(405);
       res.end(JSON.stringify({
         success: false,
         message: 'Method not allowed'
@@ -236,7 +238,7 @@ const routes = {
       { _id: '4', name: 'Herbs', slug: 'herbs' }
     ];
     
-    res.writeHead(200, corsHeaders);
+    res.writeHead(200);
     res.end(JSON.stringify({
       success: true,
       data: categories
@@ -250,9 +252,14 @@ const server = http.createServer((req, res) => {
   const pathname = parsedUrl.pathname;
   const method = req.method;
 
+  // Always set CORS headers first
+  Object.keys(corsHeaders).forEach(key => {
+    res.setHeader(key, corsHeaders[key]);
+  });
+
   // Handle CORS preflight
   if (method === 'OPTIONS') {
-    res.writeHead(200, corsHeaders);
+    res.writeHead(200);
     res.end();
     return;
   }
@@ -261,7 +268,7 @@ const server = http.createServer((req, res) => {
   if (routes[pathname]) {
     routes[pathname](req, res);
   } else {
-    res.writeHead(404, corsHeaders);
+    res.writeHead(404);
     res.end(JSON.stringify({ 
       success: false, 
       message: 'Route not found',
