@@ -1,0 +1,23 @@
+services:
+  - type: web
+    name: natures-basket-backend
+    env: node
+    plan: free
+    buildCommand: cd backend && npm install
+    startCommand: cd backend && npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: MONGO_URI
+        fromDatabase:
+          name: natures-basket-db
+          property: connectionString
+      - key: JWT_SECRET
+        generateValue: true
+      - key: FRONTEND_URL
+        value: https://your-netlify-app.netlify.app
+
+databases:
+  - name: natures-basket-db
+    plan: free
+    databaseName: natures-basket
