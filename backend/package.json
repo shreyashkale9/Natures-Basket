@@ -7,7 +7,7 @@
     "start": "node server.js",
     "dev": "nodemon server.js",
     "seed": "node scripts/seedData.js",
-    "postinstall": "node -e \"const fs = require('fs'); const path = require('path'); const routerPath = path.join(__dirname, 'node_modules/express/lib/router.js'); if (!fs.existsSync(routerPath)) { fs.writeFileSync(routerPath, 'module.exports = require(\\'./router/index\\');'); console.log('Fixed Express router module'); }\""
+    "postinstall": "node -e \"console.log('Verifying Express installation...'); const express = require('express'); console.log('Express installation verified successfully');\""
   },
   "keywords": [
     "organic",
@@ -26,7 +26,7 @@
     "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
     "dotenv": "^16.3.1",
-    "express": "4.18.2",
+    "express": "4.17.1",
     "express-async-handler": "^1.2.0",
     "express-rate-limit": "^7.5.1",
     "helmet": "^7.2.0",
