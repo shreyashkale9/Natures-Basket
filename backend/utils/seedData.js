@@ -24,45 +24,39 @@ const seedCategories = async () => {
   const categories = [
     {
       name: 'Vegetables',
+      slug: 'vegetables',
       description: 'Fresh organic vegetables',
-      icon: '🥬',
-      isActive: true,
-      isFeatured: true
+      isActive: true
     },
     {
       name: 'Fruits',
+      slug: 'fruits',
       description: 'Fresh organic fruits',
-      icon: '🍎',
-      isActive: true,
-      isFeatured: true
+      isActive: true
     },
     {
       name: 'Herbs',
+      slug: 'herbs',
       description: 'Fresh herbs and spices',
-      icon: '🌿',
-      isActive: true,
-      isFeatured: false
+      isActive: true
     },
     {
       name: 'Root Vegetables',
+      slug: 'root-vegetables',
       description: 'Fresh root vegetables',
-      icon: '🥕',
-      isActive: true,
-      isFeatured: false
+      isActive: true
     },
     {
       name: 'Leafy Greens',
+      slug: 'leafy-greens',
       description: 'Fresh leafy greens',
-      icon: '🥬',
-      isActive: true,
-      isFeatured: true
+      isActive: true
     },
     {
       name: 'Exotic Vegetables',
+      slug: 'exotic-vegetables',
       description: 'Exotic and specialty vegetables',
-      icon: '🥒',
-      isActive: true,
-      isFeatured: false
+      isActive: true
     }
   ];
 
@@ -119,37 +113,35 @@ const seedAdminUser = async () => {
 
 const seedDemoUsers = async () => {
   try {
-    // Demo Farmer
-    const existingFarmer = await User.findOne({ email: 'farmer@example.com' });
-    if (!existingFarmer) {
-      const farmerUser = new User({
-        firstName: 'John',
-        lastName: 'Farmer',
-        email: 'farmer@example.com',
-        password: 'farmer123',
-        phone: '+1234567891',
-        role: 'farmer',
-        status: 'active',
-        farmLocation: 'Green Valley Farm, California',
-        farmDescription: 'Organic farm specializing in fresh vegetables',
-        farmerFields: {
-          farmName: 'Green Valley Farm',
-          isVerified: true,
-          bankDetails: {
-            accountNumber: '1234567890',
-            ifscCode: 'BANK0001234',
-            accountHolderName: 'John Farmer'
-          },
-          totalEarnings: 0,
-          totalOrders: 0
+    // Demo Farmer - Force create/update
+    await User.deleteOne({ email: 'farmer@example.com' });
+    const farmerUser = new User({
+      firstName: 'John',
+      lastName: 'Farmer',
+      email: 'farmer@example.com',
+      password: 'farmer123',
+      phone: '+1234567891',
+      role: 'farmer',
+      status: 'active',
+      farmLocation: 'Green Valley Farm, California',
+      farmDescription: 'Organic farm specializing in fresh vegetables',
+      farmerFields: {
+        farmName: 'Green Valley Farm',
+        isVerified: true,
+        bankDetails: {
+          accountNumber: '1234567890',
+          ifscCode: 'BANK0001234',
+          accountHolderName: 'John Farmer'
         },
-        emailVerified: true
-      });
-      await farmerUser.save();
-      console.log('✅ Demo farmer created successfully');
-      console.log('📧 Email: farmer@example.com');
-      console.log('🔑 Password: farmer123');
-    }
+        totalEarnings: 0,
+        totalOrders: 0
+      },
+      emailVerified: true
+    });
+    await farmerUser.save();
+    console.log('✅ Demo farmer created successfully');
+    console.log('📧 Email: farmer@example.com');
+    console.log('🔑 Password: farmer123');
 
     // Demo Customer
     const existingCustomer = await User.findOne({ email: 'customer@example.com' });
