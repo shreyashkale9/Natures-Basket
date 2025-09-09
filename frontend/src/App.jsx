@@ -164,10 +164,14 @@ function App() {
                   <Route path="products/:productId/edit" element={<EditProduct />} />
                 </Route>
 
-                {/* Admin Routes - With Layout and Outlet */}
+                {/* Admin Routes */}
                 <Route
                   path="/admin/*"
-                  element={<Layout />}
+                  element={
+                    <ProtectedRoute allowedRoles={['admin']}>
+                      <Layout />
+                    </ProtectedRoute>
+                  }
                 >
                   <Route index element={<AdminDashboard />} />
                   <Route path="dashboard" element={<AdminDashboard />} />

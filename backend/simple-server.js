@@ -152,25 +152,62 @@ const routes = {
       req.on('end', () => {
         try {
           const credentials = JSON.parse(body);
+          
+          // Demo users with different roles
+          const demoUsers = {
+            'admin@example.com': {
+              _id: '1',
+              firstName: 'Admin',
+              lastName: 'User',
+              email: 'admin@example.com',
+              role: 'admin'
+            },
+            'farmer@example.com': {
+              _id: '2',
+              firstName: 'John',
+              lastName: 'Farmer',
+              email: 'farmer@example.com',
+              role: 'farmer'
+            },
+            'customer@example.com': {
+              _id: '3',
+              firstName: 'Jane',
+              lastName: 'Customer',
+              email: 'customer@example.com',
+              role: 'customer'
+            },
+            'test@example.com': {
+              _id: '4',
+              firstName: 'Test',
+              lastName: 'User',
+              email: 'test@example.com',
+              role: 'customer'
+            }
+          };
+          
           // Simple demo authentication
           if (credentials.email && credentials.password) {
-            res.writeHead(200);
-            res.end(JSON.stringify({
-              success: true,
-              message: 'Login successful',
-              token: 'demo-token-123',
-              user: {
-                _id: '1',
-                name: 'Demo User',
-                email: credentials.email,
-                role: 'customer'
-              }
-            }));
+            const user = demoUsers[credentials.email];
+            if (user) {
+              res.writeHead(200);
+              res.end(JSON.stringify({
+                success: true,
+                message: 'Login successful',
+                token: `demo-token-${user._id}`,
+                user: user
+              }));
+            } else {
+              res.writeHead(401);
+              res.end(JSON.stringify({
+                success: false,
+                message: 'Invalid credentials'
+              }));
+            }
           } else {
             res.writeHead(400);
             res.end(JSON.stringify({
               success: false,
-              message: 'Invalid credentials'
+              message: 'Email and password are required'
             }));
           }
         } catch (error) {
@@ -243,6 +280,68 @@ const routes = {
       success: true,
       data: categories
     }));
+  },
+
+  '/api/auth/me': (req, res) => {
+    // Simple token validation - in a real app, you'd verify JWT
+    const authHeader = req.headers.authorization;
+    if (!authHeader || !authHeader.startsWith('Bearer ')) {
+      res.writeHead(401);
+      res.end(JSON.stringify({
+        success: false,
+        message: 'No token provided'
+      }));
+      return;
+    }
+
+    const token = authHeader.split(' ')[1];
+    
+    // Demo users mapping
+    const demoUsers = {
+      'demo-token-1': {
+        _id: '1',
+        firstName: 'Admin',
+        lastName: 'User',
+        email: 'admin@example.com',
+        role: 'admin'
+      },
+      'demo-token-2': {
+        _id: '2',
+        firstName: 'John',
+        lastName: 'Farmer',
+        email: 'farmer@example.com',
+        role: 'farmer'
+      },
+      'demo-token-3': {
+        _id: '3',
+        firstName: 'Jane',
+        lastName: 'Customer',
+        email: 'customer@example.com',
+        role: 'customer'
+      },
+      'demo-token-4': {
+        _id: '4',
+        firstName: 'Test',
+        lastName: 'User',
+        email: 'test@example.com',
+        role: 'customer'
+      }
+    };
+
+    const user = demoUsers[token];
+    if (user) {
+      res.writeHead(200);
+      res.end(JSON.stringify({
+        success: true,
+        user: user
+      }));
+    } else {
+      res.writeHead(401);
+      res.end(JSON.stringify({
+        success: false,
+        message: 'Invalid token'
+      }));
+    }
   }
 };
 
