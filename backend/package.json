@@ -1,24 +1,42 @@
 {
-  "name": "natures-basket-backend-minimal",
+  "name": "natures-basket-backend",
   "version": "1.0.0",
-  "description": "Minimal Nature's Basket API - No Express dependencies",
-  "main": "simple-server.js",
+  "description": "Backend API for Nature's Basket - Organic Vegetable Mart",
+  "main": "server.js",
   "scripts": {
-    "start": "node simple-server.js",
-    "dev": "node simple-server.js"
-  },
-  "engines": {
-    "node": ">=18.0.0"
+    "start": "node server.js",
+    "dev": "nodemon server.js",
+    "seed": "node scripts/seedData.js"
   },
   "keywords": [
     "organic",
     "vegetables",
-    "api",
-    "minimal"
+    "farmers",
+    "ecommerce",
+    "api"
   ],
   "author": "Nature's Basket Team",
   "license": "MIT",
+  "engines": {
+    "node": "18.20.4",
+    "npm": ">=8.0.0"
+  },
   "dependencies": {
-    "dotenv": "^16.3.1"
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "express": "4.16.4",
+    "express-async-handler": "^1.2.0",
+    "express-rate-limit": "^7.5.1",
+    "helmet": "^7.2.0",
+    "joi": "^17.13.3",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.0.3",
+    "morgan": "^1.10.0",
+    "multer": "^1.4.5-lts.1",
+    "uuid": "^9.0.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.2"
   }
 }

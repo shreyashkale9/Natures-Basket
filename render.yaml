@@ -4,11 +4,14 @@ services:
     env: node
     plan: free
     rootDir: backend
-    buildCommand: cp package-minimal.json package.json && npm install
-    startCommand: node simple-server.js
+    buildCommand: npm install
+    startCommand: npm start
+    healthCheckPath: /health
     envVars:
       - key: NODE_ENV
         value: production
+      - key: PORT
+        value: 10000
       - key: MONGO_URI
         fromDatabase:
           name: natures-basket-db
@@ -16,7 +19,7 @@ services:
       - key: JWT_SECRET
         generateValue: true
       - key: FRONTEND_URL
-        value: https://your-netlify-app.netlify.app
+        value: https://naturesbasketapp.netlify.app
 
 databases:
   - name: natures-basket-db
