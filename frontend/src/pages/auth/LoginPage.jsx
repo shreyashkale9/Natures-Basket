@@ -32,8 +32,8 @@ const LoginPage = () => {
   ];
 
   const demoCredentials = {
-    customer: { email: 'test@example.com', password: 'password123' },
-    farmer: { email: 'farmer@example.com', password: 'password123' },
+    customer: { email: 'customer@example.com', password: 'customer123' },
+    farmer: { email: 'farmer@example.com', password: 'farmer123' },
     admin: { email: 'admin@naturesbasket.com', password: 'admin123' },
   };
 
