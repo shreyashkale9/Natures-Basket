@@ -84,6 +84,7 @@ export const AuthProvider = ({ children }) => {
   const loginMutation = useMutation({
     mutationFn: (credentials) => authApi.login(credentials),
     onSuccess: (data) => {
+      console.log('Login success data:', data);
       const { token: newToken, user: userData } = data;
       
       // Set token with 45-minute expiry for admin, 24 hours for others
@@ -109,6 +110,7 @@ export const AuthProvider = ({ children }) => {
       queryClient.invalidateQueries(['user']);
     },
     onError: (error) => {
+      console.log('Login error:', error);
       toast.error(error.response?.data?.message || 'Login failed');
     },
   });
