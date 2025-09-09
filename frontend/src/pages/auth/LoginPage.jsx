@@ -38,6 +38,7 @@ const LoginPage = () => {
   };
 
   const onSubmit = (data) => {
+    console.log('Submitting login with:', { ...data, role: selectedRole });
     login({ ...data, role: selectedRole });
   };
 
