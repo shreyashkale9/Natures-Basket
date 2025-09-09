@@ -4,9 +4,10 @@ services:
     env: node
     plan: free
     rootDir: backend
-    buildCommand: npm install
+    buildCommand: npm ci --only=production
     startCommand: npm start
     healthCheckPath: /health
+    healthCheckGracePeriod: 300
     envVars:
       - key: NODE_ENV
         value: production
